@@ -29,9 +29,9 @@
       </template>
     </q-table>
 
-    <div v-if="claims.length === 0" class="empty-state">
+    <!--<div v-if="claims.length === 0" class="empty-state">
       <p class="minimalist-subtitle">No hay siniestros registrados</p>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -39,7 +39,7 @@
 import { ref, onMounted } from 'vue'
 import { getClaims } from 'src/services/claimService'
 import type { Claim } from 'src/interfaces/models'
-import { Loading } from 'quasar'
+import { Loading, Notify } from 'quasar'
 
 const claims = ref<Claim[]>([])
 
@@ -51,7 +51,7 @@ const columns = [
     align: 'left' as const,
     sortable: true
   },
-    {
+  {
     name: 'incidentDate',
     label: 'Fecha',
     field: 'incidentDate',
@@ -81,6 +81,9 @@ async function load() {
   })
   try {
     claims.value = await getClaims()
+  } catch (err) {
+    console.error('Error cargando siniestros', err)
+    Notify.create({ type: 'negative', message: 'Error cargando siniestros. Intente más tarde.', position: 'top' })
   } finally {
     Loading.hide()
   }

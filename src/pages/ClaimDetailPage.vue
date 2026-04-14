@@ -93,10 +93,6 @@ const filteredStatusOptions = computed(() => {
 })
 
 async function load() {
-  Loading.show({
-    message: 'Cargando detalle...',
-    spinnerColor: 'black'
-  })
   try {
     const id = route.params.id as string
     claim.value = await getClaim(id)
