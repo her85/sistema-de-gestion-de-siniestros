@@ -16,14 +16,19 @@
         </div>
 
         <!-- Actualizar Estado -->
-        <div class="update-status-section">
+        <!-- Nota: sección oculta para estados PAGADO/RECHAZO. -->
+        <div v-if="claim && claim.status !== 'PAGADO' && claim.status !== 'RECHAZADO'" class="update-status-section">
           <h3 class="section-title">Actualizar Estado</h3>
           <div class="status-form">
-            <q-select v-model="newStatus" :options="statusOptions" label="Nuevo Estado" outlined dense
+            <q-select v-model="newStatus" :options="filteredStatusOptions" label="Nuevo Estado" outlined dense
               class="status-select" />
-            <q-input v-if="newStatus === 'PAGADO' || newStatus === 'APROBADO'" v-model.number="newAmount" label="Monto"
+            <!-- OBS: El campo Monto se muestra cuando `newStatus === 'APROBADO'`. -->
+            <q-input v-if="newStatus === 'APROBADO'" v-model.number="newAmount" label="Monto"
               type="number" outlined dense prefix="$" class="amount-input" />
-            <q-btn @click="updateStatus" :disable="!newStatus || (newStatus === 'PAGADO' && !newAmount)"
+            <div v-if="newStatus === 'APROBADO'" :class="['amount-hint', (newAmount == null || newAmount <= 0) ? 'invalid' : '']">
+              El monto debe ser mayor a 0
+            </div>
+            <q-btn @click="updateStatus" :disable="!newStatus || (newStatus === 'APROBADO' && (newAmount == null || newAmount <= 0))"
               :loading="updating" color="primary" label="Actualizar" unelevated class="update-btn" />
           </div>
         </div>
@@ -62,10 +67,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getClaim, updateClaimStatus } from 'src/services/claimService'
-import type { Claim } from 'components/models'
+import type { Claim } from 'src/interfaces/models'
 import { Notify, Loading } from 'quasar'
 
 const route = useRoute()
@@ -74,13 +79,18 @@ const newStatus = ref<string>('')
 const newAmount = ref<number | null>(null)
 const updating = ref(false)
 
-const statusOptions = [
-  'PENDIENTE',
-  'EN_REVISIÓN',
-  'APROBADO',
-  'RECHAZADO',
-  'PAGADO'
-]
+const allowedTransitions: Record<string, string[]> = {
+  'PENDIENTE': ['EN REVISIÓN'],
+  'EN REVISIÓN': ['APROBADO', 'RECHAZADO'],
+  'APROBADO': ['PAGADO'],
+  'RECHAZADO': [],
+  'PAGADO': []
+}
+
+const filteredStatusOptions = computed(() => {
+  const current = claim.value?.status || ''
+  return allowedTransitions[current] || []
+})
 
 async function load() {
   Loading.show({
@@ -90,8 +100,9 @@ async function load() {
   try {
     const id = route.params.id as string
     claim.value = await getClaim(id)
-    newStatus.value = claim.value?.status || ''
-    newAmount.value = claim.value?.amount || null
+    // Limpiar selección inicial para forzar elegir solo de las transiciones permitidas
+    newStatus.value = ''
+    newAmount.value = claim.value?.amount ?? null
   } finally {
     Loading.hide()
   }
@@ -102,15 +113,6 @@ async function updateStatus() {
 
   const currentStatus = claim.value.status
 
-  // Validar transiciones permitidas
-  const allowedTransitions: Record<string, string[]> = {
-    'PENDIENTE': ['EN_REVISIÓN'],
-    'EN_REVISIÓN': ['APROBADO', 'RECHAZADO'],
-    'APROBADO': ['PAGADO'],
-    'RECHAZADO': [],
-    'PAGADO': []
-  }
-
   if (!allowedTransitions[currentStatus || '']?.includes(newStatus.value)) {
     Notify.create({
       type: 'negative',
@@ -120,10 +122,11 @@ async function updateStatus() {
     return
   }
 
-  if (newStatus.value === 'PAGADO' && !newAmount.value) {
+  // Validación: para 'APROBADO' el monto debe existir y ser > 0.
+  if (newStatus.value === 'APROBADO' && (newAmount.value == null || newAmount.value <= 0)) {
     Notify.create({
       type: 'negative',
-      message: 'El monto es requerido para el estado PAGADO',
+      message: 'El monto debe ser mayor a 0 para el estado APROBADO',
       position: 'top'
     })
     return
@@ -137,7 +140,7 @@ async function updateStatus() {
   try {
     updating.value = true
     const id = route.params.id as string
-    claim.value = await updateClaimStatus(id, newStatus.value, newAmount.value || undefined)
+    claim.value = await updateClaimStatus(id, newStatus.value, newAmount.value ?? undefined)
 
     Notify.create({
       type: 'positive',
@@ -145,6 +148,8 @@ async function updateStatus() {
       position: 'top'
     })
   } catch (error: unknown) {
+    // Nota: extracción robusta pero verbosa del mensaje de error.
+    // Se puede simplificar con `axios.isAxiosError(error)` o adaptando al shape del backend.
     const errorMessage = error instanceof Error && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'object' && 'error' in error.response.data
       ? String(error.response.data.error)
       : 'Error al actualizar el estado';
@@ -269,6 +274,16 @@ onMounted(load)
 .amount-input {
   flex: 1;
   min-width: 120px;
+}
+
+.amount-hint {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #666;
+}
+.amount-hint.invalid {
+  color: #d32f2f;
+  font-weight: 600;
 }
 
 .update-btn {

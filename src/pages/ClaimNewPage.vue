@@ -9,18 +9,18 @@
       <q-form @submit.prevent="onSubmit" class="minimalist-form">
         <div class="form-group">
           <label class="form-label">Descripción</label>
-          <q-input v-model="description" placeholder="Describe el incidente..." outlined type="textarea" rows="4"
+          <q-input v-model="description" placeholder="Describe el siniestro..." outlined type="textarea" rows="4"
             class="minimalist-input" :rules="[val => val && val.length >= 10 || 'Mínimo 10 caracteres']" />
         </div>
 
         <div class="form-group">
           <label class="form-label">Ubicación</label>
-          <q-input v-model="location" placeholder="Dirección o lugar del incidente" outlined class="minimalist-input"
+          <q-input v-model="location" placeholder="Dirección del siniestro" outlined class="minimalist-input"
             :rules="[val => val && val.length >= 10 || 'Mínimo 10 caracteres']" />
         </div>
 
         <div class="form-group">
-          <label class="form-label">Fecha del incidente</label>
+          <label class="form-label">Fecha del siniestro</label>
           <q-input v-model="incidentDate" type="date" outlined class="minimalist-input" />
         </div>
 
@@ -39,7 +39,7 @@ import { useRouter } from 'vue-router'
 import { Notify, Loading } from 'quasar'
 import { createClaim } from 'src/services/claimService'
 import { sanitizeString, sanitizeDate, validateStringLength } from 'src/utils/sanitizer'
-import type { CreateClaimDTO } from 'src/components/models'
+import type { CreateClaimDTO } from 'src/interfaces/models'
 
 const router = useRouter()
 
@@ -70,7 +70,7 @@ async function onSubmit() {
 
   const sanitizedDate = sanitizeDate(incidentDate.value)
   if (!sanitizedDate) {
-    showNotify({ type: 'negative', message: 'Fecha del incidente inválida' })
+    showNotify({ type: 'negative', message: 'Fecha del siniestro inválida' })
     return
   }
 

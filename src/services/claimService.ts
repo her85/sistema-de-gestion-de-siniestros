@@ -1,5 +1,5 @@
 import { api } from 'boot/axios'
-import type { Claim, CreateClaimDTO } from 'components/models'
+import type { Claim, CreateClaimDTO } from 'src/interfaces/models'
 
 const base = '/claims'
 

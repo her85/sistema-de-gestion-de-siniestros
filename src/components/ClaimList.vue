@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getClaims } from 'src/services/claimService'
-import type { Claim } from 'components/models'
+import type { Claim } from 'src/interfaces/models'
 import { Loading } from 'quasar'
 
 const claims = ref<Claim[]>([])
