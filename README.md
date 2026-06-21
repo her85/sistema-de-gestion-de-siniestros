@@ -1,491 +1,238 @@
-# Sistema de Gestión de Siniestros - Frontend 🎨
+# Sistema de Gestión de Siniestros - Frontend
 
-Aplicación web frontend para la gestión de siniestros de seguros, construida con Vue 3, Quasar Framework y TypeScript.
+Resumen técnico y funcional orientado a analistas funcionales y equipos de desarrollo.
 
-## 📋 Tabla de Contenidos
+## Descripción
 
-- [Características](#-características)
-- [Tecnologías](#-tecnologías)
-- [Requisitos Previos](#-requisitos-previos)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Uso](#-uso)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Rutas de la Aplicación](#-rutas-de-la-aplicación)
-- [Componentes Principales](#-componentes-principales)
-- [Scripts Disponibles](#-scripts-disponibles)
-- [Integración con la API](#-integración-con-la-api)
-- [Build para Producción](#-build-para-producción)
-- [Deployment](#-deployment)
+- Propósito: Interfaz frontend para gestión de siniestros automotor. Permite listar, crear, ver detalle y editar siniestros.
+- Audiencia: Analistas funcionales, desarrolladores frontend, y equipos QA/DevOps.
 
-## ✨ Características
+## Principales funcionalidades
 
-- ✅ **Vue 3 Composition API** - Framework progresivo y moderno
-- ✅ **Quasar Framework** - Componentes UI de alta calidad
-- ✅ **TypeScript** - Tipado estático para mayor seguridad
-- ✅ **Vue Router** - Navegación declarativa
-- ✅ **Axios** - Cliente HTTP configurado
-- ✅ **Responsive Design** - Adaptable a todos los dispositivos
-- ✅ **Material Design** - Interfaz moderna y consistente
-- ✅ **Hot Module Replacement** - Desarrollo rápido con HMR
-- ✅ **ESLint + Prettier** - Código limpio y consistente
-- ✅ **Vite** - Build tool ultrarrápido
+- Listado de siniestros con filtros y paginación.
+- Visualización detallada de un siniestro.
+- Creación y edición de siniestros.
+- Manejo de errores y rutas de navegación (página 404 incluida).
 
-## 🛠 Tecnologías
+## Contexto técnico
 
-- **Framework**: Vue 3.5.x (Composition API)
-- **UI Framework**: Quasar 2.16.x
-- **Lenguaje**: TypeScript 5.x
-- **Router**: Vue Router 4.x
-- **HTTP Client**: Axios 1.13.x
-- **Build Tool**: Vite (via Quasar CLI)
-- **Iconos**: Material Icons
-- **Fuentes**: Roboto
+- Framework: Quasar + Vue 3 + TypeScript.
+- Estructura principal:
+  - `src/pages`: vistas y páginas (Index, Claims, ClaimDetail, ClaimNew).
+  - `src/components`: componentes reutilizables (ej. `ClaimList.vue`).
+  - `src/services/claimService.ts`: capa de comunicación con la API (axios).
+  - `src/interfaces/models.ts`: definiciones de modelos/DTO usados en la app.
+  - `src/utils/sanitizer.ts`: utilidades de sanitización y validación ligera.
 
-## 📦 Requisitos Previos
+## Arquitectura funcional
 
-- Node.js >= 20.x (también soporta v22, v24, v26, v28)
-- npm >= 6.13.4 o yarn >= 1.21.1
-- Quasar CLI (se instala automáticamente)
+- Capa UI: páginas y componentes presentan datos y capturan acciones del usuario.
+- Capa de servicio: `claimService` encapsula llamadas REST (GET/POST/PUT/DELETE).
+- Modelo de datos: `models.ts` define las entidades principales (Claim y subtipos).
+- Flujo típico: la vista llama al servicio → servicio usa `axios` en `boot/axios.ts` → recibe/transforma datos → componente renderiza.
 
-## 🚀 Instalación
+## Instalación (desarrollo)
 
-### 1. Clonar el repositorio
-
-```bash
-git clone <repository-url>
-cd front-sistema-de-gestion-de-siniestros
-```
-
-### 2. Instalar dependencias
+1. Clonar el repositorio.
+2. Instalar dependencias:
 
 ```bash
 npm install
-# o
-yarn install
 ```
 
-Esto también ejecutará automáticamente `quasar prepare` gracias al script postinstall.
-
-### 3. Configurar variables de entorno
-
-Crea un archivo `.env` en la raíz del proyecto:
-
-```env
-# API Backend
-API_URL=http://localhost:3000/api
-
-# Quasar
-NODE_ENV=development
-```
-
-## ⚙️ Configuración
-
-### Variables de Entorno
-
-| Variable | Descripción | Default |
-|----------|-------------|---------|
-| `API_URL` | URL base de la API backend | `http://localhost:3000/api` |
-| `NODE_ENV` | Entorno de ejecución | `development` |
-
-### Configuración de Axios
-
-El cliente Axios está configurado en [src/boot/axios.ts](src/boot/axios.ts) y se inicializa automáticamente al arrancar la app.
-
-### Configuración de Quasar
-
-La configuración principal está en [quasar.config.ts](quasar.config.ts). Puedes personalizar:
-- Plugins de Quasar
-- Build settings
-- PWA options
-- Electron settings
-- Y más...
-
-Ver [documentación oficial](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
-
-## 🎯 Uso
-
-### Modo Desarrollo
+3. Ejecutar en modo desarrollo:
 
 ```bash
 npm run dev
-# o
-quasar dev
 ```
 
-La aplicación estará disponible en `http://localhost:9000` (puerto por defecto de Quasar)
+## Configuración y variables
 
-### Características en Desarrollo:
-- ⚡ Hot Module Replacement (HMR)
-- 🔍 Error reporting en tiempo real
-- 🔄 Recarga automática al guardar cambios
+- Revisar `boot/axios.ts` para la configuración base de la API (baseURL, interceptores de error/autenticación).
+- Si hay variables de entorno, definirlas en el entorno de ejecución o en el archivo `.env` según convenga.
 
-### Linting
+## Convenciones y buenas prácticas
 
-```bash
-npm run lint
-# o
-yarn lint
+- Componentes: mantener simples; delegar llamadas HTTP a `services`.
+- Tipado: usar las interfaces de `src/interfaces/models.ts` en props y respuestas.
+- Manejo de errores: centralizar en interceptores de axios para mostrar mensajes consistentes.
+
+## Estructura de carpetas (resumen)
+
+- `src/pages` — Vistas por ruta.
+- `src/components` — Componentes reutilizables.
+- `src/services` — Lógica de consumo de API.
+- `src/interfaces` — Modelos y tipos.
+- `src/boot` — Inicializadores (axios, plugins).
+
+## Puntos funcionales relevantes para QA / Product
+
+- Casos clave a probar: creación de siniestro, edición, validación de campos, manejo de respuestas 4xx/5xx, comportamiento de paginación y filtros.
+- Rutas críticas: `/claims`, `/claims/new`, `/claims/:id`.
+
+## Diagramas de flujo
+
+Flujo de creación de un siniestro:
+
+```mermaid
+flowchart TD
+	A[Usuario abre /claims/new] --> B[Formulario de creación]
+	B --> C{Validación local}
+	C -- OK --> D[POST /api/claims]
+	C -- Error --> E[Mostrar errores en formulario]
+	D --> F{Respuesta API}
+	F -- 201 --> G[Redirigir a /claims/:id]
+	F -- 4xx/5xx --> H[Mostrar mensaje de error general]
 ```
 
-### Formateo de Código
+## Flujo de listado y navegación a detalle:
 
-```bash
-npm run format
-# o
-yarn format
+```mermaid
+flowchart LR
+	I[Usuario abre /claims] --> J[Componente ClaimList solicita GET /api/claims?page=X&filters]
+	J --> K[Renderiza lista con paginación]
+	K --> L[Usuario hace click en siniestro]
+	L --> M[Navegar a /claims/:id -> ClaimDetailPage solicita GET /api/claims/:id]
 ```
 
-Esto formateará todos los archivos `.js`, `.ts`, `.vue`, `.scss`, `.html`, `.md`, y `.json`.
+## Ejemplos de request / response (contratos API)
 
-## 📁 Estructura del Proyecto
+- Obtener listado de siniestros
 
-```
-front-sistema-de-gestion-de-siniestros/
-├── public/
-│   └── icons/                 # Iconos de la aplicación
-├── src/
-│   ├── assets/                # Assets estáticos (imágenes, etc.)
-│   ├── boot/
-│   │   └── axios.ts          # Configuración de Axios
-│   ├── components/
-│   │   ├── ClaimList.vue     # Lista de siniestros
-│   │   └── models.ts         # TypeScript interfaces
-│   ├── css/
-│   │   ├── app.scss          # Estilos globales
-│   │   └── quasar.variables.scss # Variables de Quasar
-│   ├── layouts/
-│   │   └── MainLayout.vue    # Layout principal con navegación
-│   ├── pages/
-│   │   ├── IndexPage.vue     # Página de inicio
-│   │   ├── ClaimsPage.vue    # Página de listado de siniestros
-│   │   ├── ClaimNewPage.vue  # Formulario de nuevo siniestro
-│   │   ├── ClaimDetailPage.vue # Detalle de siniestro
-│   │   └── ErrorNotFound.vue # Página 404
-│   ├── router/
-│   │   ├── index.ts          # Configuración del router
-│   │   └── routes.ts         # Definición de rutas
-│   ├── services/
-│   │   └── claimService.ts   # Servicio API de siniestros
-│   ├── App.vue               # Componente raíz
-│   └── env.d.ts              # Tipos de variables de entorno
-├── .env                      # Variables de entorno
-├── eslint.config.js          # Configuración ESLint
-├── index.html                # HTML principal
-├── package.json
-├── postcss.config.js
-├── quasar.config.ts          # Configuración de Quasar
-├── tsconfig.json             # Configuración TypeScript
-└── README.md
+Request:
+
+```http
+GET /api/claims?page=1&limit=20&status=open HTTP/1.1
+Host: api.example.com
+Accept: application/json
+Authorization: Bearer <token>
 ```
 
-## 🗺️ Rutas de la Aplicación
+Response 200:
 
-| Ruta | Componente | Descripción |
-|------|------------|-------------|
-| `/` | IndexPage | Página de inicio/dashboard |
-| `/claims` | ClaimsPage | Listado de todos los siniestros |
-| `/claims/new` | ClaimNewPage | Formulario para crear nuevo siniestro |
-| `/claims/:id` | ClaimDetailPage | Detalle y edición de un siniestro |
-| `/:catchAll(.*)` | ErrorNotFound | Página 404 para rutas no encontradas |
-
-## 🧩 Componentes Principales
-
-### ClaimList.vue
-Componente reutilizable que muestra una lista de siniestros con:
-- Tabla/Tarjetas responsivas
-- Filtros por estado
-- Paginación
-- Acciones rápidas
-
-### MainLayout.vue
-Layout principal que incluye:
-- Barra de navegación superior
-- Drawer lateral (menú)
-- Área de contenido principal
-- Footer
-
-### Servicios
-
-#### claimService.ts
-Servicio centralizado para comunicación con la API:
-
-```typescript
-// Obtener todos los siniestros
-getClaims(filters?: { status?: string; date?: string })
-
-// Obtener un siniestro por ID
-getClaim(id: string)
-
-// Crear nuevo siniestro
-createClaim(payload: CreateClaimDTO)
-
-// Actualizar estado de siniestro
-updateClaimStatus(id: string, status: string, amount?: number)
-```
-
-### Modelos TypeScript
-
-```typescript
-interface Claim {
-  id: string;
-  claimNumber: string;
-  userId: string;
-  description: string;
-  incidentDate?: string;
-  location?: string;
-  status?: string;
-  amount?: number | null;
-  images?: Image[];
-}
-
-interface CreateClaimDTO {
-  userId: string;
-  description: string;
-  incidentDate: Date | string;
-  location?: string;
-  images: string[];
-}
-```
-
-## 📜 Scripts Disponibles
-
-```bash
-# Desarrollo
-npm run dev              # Inicia servidor de desarrollo
-
-# Linting y Formateo
-npm run lint             # Ejecuta ESLint
-npm run format           # Formatea código con Prettier
-
-# Build
-npm run build            # Compila para producción
-quasar build             # Build con Quasar CLI
-
-# Testing
-npm test                 # Ejecuta tests (por configurar)
-
-# Otros
-npm run postinstall      # Prepara Quasar (ejecutado automáticamente)
-```
-
-## 🔗 Integración con la API
-
-### Configuración Base
-
-El cliente Axios está pre-configurado con:
-- **Base URL**: `http://localhost:3000/api` (modificable vía `API_URL` en `.env`)
-- **Headers**: Automáticamente manejados por Axios
-- **Interceptors**: Disponibles para agregar autenticación/logging
-
-### Ejemplo de Uso
-
-```typescript
-import { getClaims, createClaim } from 'src/services/claimService';
-
-// En un componente Vue
-const claims = ref<Claim[]>([]);
-
-const loadClaims = async () => {
-  try {
-    claims.value = await getClaims();
-  } catch (error) {
-    console.error('Error loading claims:', error);
-  }
-};
-
-const submitClaim = async (data: CreateClaimDTO) => {
-  try {
-    const newClaim = await createClaim(data);
-    console.log('Claim created:', newClaim);
-  } catch (error) {
-    console.error('Error creating claim:', error);
-  }
-};
-```
-
-### Manejo de Errores
-
-Se recomienda implementar un interceptor global para errores:
-
-```typescript
-// En boot/axios.ts
-api.interceptors.response.use(
-  response => response,
-  error => {
-    // Manejo centralizado de errores
-    if (error.response?.status === 401) {
-      // Redirigir a login
+```json
+{
+  "data": [
+    {
+      "id": "c123",
+      "policyNumber": "P-0001",
+      "insured": "Juan Perez",
+      "status": "open",
+      "createdAt": "2026-06-01T12:34:56Z"
     }
-    return Promise.reject(error);
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 124
   }
-);
+}
 ```
 
-## 📦 Build para Producción
+- Crear siniestro
 
-### Build SPA (Single Page Application)
+Request:
+
+```http
+POST /api/claims HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+	"policyNumber": "P-0002",
+	"insured": "María López",
+	"incidentDate": "2026-06-20",
+	"description": "Choque trasero en avenida",
+	"vehicle": {
+		"plate": "ABC123",
+		"model": "Toyota Corolla 2018"
+	}
+}
+```
+
+Response 201 (ejemplo):
+
+```json
+{
+  "id": "c124",
+  "policyNumber": "P-0002",
+  "insured": "María López",
+  "status": "open",
+  "createdAt": "2026-06-20T09:00:00Z"
+}
+```
+
+- Obtener detalle de siniestro
+
+Request:
+
+```http
+GET /api/claims/c124 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+Authorization: Bearer <token>
+```
+
+Response 200 (ejemplo):
+
+```json
+{
+  "id": "c124",
+  "policyNumber": "P-0002",
+  "insured": "María López",
+  "incidentDate": "2026-06-20",
+  "description": "Choque trasero en avenida",
+  "vehicle": { "plate": "ABC123", "model": "Toyota Corolla 2018" },
+  "status": "open",
+  "history": []
+}
+```
+
+Errores comunes y formatos
+
+- Error de validación (400):
+
+```json
+{
+  "error": "ValidationError",
+  "details": {
+    "policyNumber": "Campo requerido",
+    "incidentDate": "Formato inválido"
+  }
+}
+```
+
+- Error de servidor (500):
+
+```json
+{
+  "error": "ServerError",
+  "message": "Error interno, reintentar más tarde"
+}
+```
+
+## Despliegue
+
+- El frontend produce un build estático (dependiendo de la configuración de Quasar). Comando típico:
 
 ```bash
 npm run build
-# o
-quasar build
 ```
 
-Esto generará los archivos optimizados en `dist/spa/`:
-- JavaScript minificado y chunked
-- CSS extraído y optimizado
-- Assets optimizados
-- Source maps para debugging
+- El resultado se sirve desde un servidor estático (NGINX, CDN o similar) o se integra en un pipeline CI/CD.
 
-### Configuración del Build
+## Cómo colaborar
 
-El build está configurado para:
-- Target browsers: ES2022, Firefox 115+, Chrome 115+, Safari 14+
-- TypeScript strict mode
-- Tree shaking automático
-- Code splitting
-- Lazy loading de rutas
+- Crear ramas feature/bugfix con prefijo `feature/` o `fix/`.
+- Abrir PRs con descripción funcional y técnica, pasos para reproducir y pruebas realizadas.
 
-### Variables de Entorno en Producción
+Contacto y soporte
 
-Asegúrate de configurar:
-```env
-API_URL=https://tu-api-production.com/api
-NODE_ENV=production
-```
+- Para dudas funcionales: responsable del producto / equipo de negocio.
+- Para dudas técnicas: equipo frontend (revisar historial de commits y `package.json` para autores).
 
-## 🚢 Deployment
+## Notas finales
 
-### Netlify / Vercel
+- Este README resume el propósito y la arquitectura del frontend. Puedo expandir secciones (diagramas de flujo, contratos API, ejemplos de request/response) si lo deseas.
 
-1. **Build Command**: `quasar build`
-2. **Output Directory**: `dist/spa`
-3. **Environment Variables**: Configurar `API_URL`
-
-### Render
-
-1. Conectar repositorio
-2. Configurar:
-   - Build Command: `npm install && quasar build`
-   - Publish Directory: `dist/spa`
-3. Agregar variables de entorno
-
-### GitHub Pages
-
-```bash
-# Build con base path
-quasar build -m spa
-
-# Deploy (requiere gh-pages package)
-npx gh-pages -d dist/spa
-```
-
-### Docker
-
-```dockerfile
-# Build stage
-FROM node:20-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-COPY --from=build /app/dist/spa /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### Nginx Configuration
-
-```nginx
-server {
-  listen 80;
-  server_name _;
-  root /usr/share/nginx/html;
-  index index.html;
-
-  location / {
-    try_files $uri $uri/ /index.html;
-  }
-
-  # Cache static assets
-  location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-    expires 1y;
-    add_header Cache-Control "public, immutable";
-  }
-}
-```
-
-## 🎨 Personalización
-
-### Temas de Quasar
-
-Personaliza colores en [src/css/quasar.variables.scss](src/css/quasar.variables.scss):
-
-```scss
-$primary: #1976D2;
-$secondary: #26A69A;
-$accent: #9C27B0;
-// etc...
-```
-
-### Agregar Plugins de Quasar
-
-En [quasar.config.ts](quasar.config.ts):
-
-```typescript
-framework: {
-  plugins: [
-    'Notify',
-    'Dialog',
-    'Loading',
-    // etc...
-  ]
-}
-```
-
-## 🔒 Mejores Prácticas
-
-1. **Siempre usa TypeScript** para props y emits
-2. **Composition API** preferida sobre Options API
-3. **Lazy loading** de rutas para mejor performance
-4. **Manejo de errores** centralizado con try/catch
-5. **Validación de formularios** con Quasar o Vuelidate
-6. **Loading states** para operaciones asíncronas
-7. **Responsive design** con Quasar breakpoints
-
-## 📄 Licencia
-
-Privado
-
-## 👥 Contribución
-
-1. Fork el proyecto
-2. Crea una rama feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📞 Soporte
-
-Para preguntas o problemas:
-- Autor: her85 <herbotto1985@gmail.com>
-- Documentación Quasar: https://v2.quasar.dev
-- Documentación Vue: https://vuejs.org
-
-## 🔗 Enlaces Útiles
-
-- [Quasar Framework](https://quasar.dev)
-- [Vue 3 Documentation](https://vuejs.org)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Material Design Icons](https://fonts.google.com/icons)
-- [Axios Documentation](https://axios-http.com)
-
----
-
-Desarrollado con Vue 3, Quasar Framework y TypeScript
