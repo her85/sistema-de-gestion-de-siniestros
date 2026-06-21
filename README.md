@@ -1,5 +1,6 @@
 # Sistema de Gestión de Siniestros - Frontend
-
+  -Portal web para la gestión y visualización de siniestros de seguros-
+  
 Resumen técnico y funcional orientado a analistas funcionales y equipos de desarrollo.
 
 ## Descripción
