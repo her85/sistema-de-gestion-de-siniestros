@@ -12,14 +12,31 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary: #000000;
-$secondary: #f5f5f5;
-$accent: #666666;
+$primary: #000000; // negro carbón
+$secondary: #f7f7f8; // fondo muy claro
+$accent: #6b6b6b; // gris medio
 
-$dark: #1d1d1d;
-$dark-page: #121212;
+$surface: #ffffff; // tarjetas y superficies
+$muted: #8e8e93; // texto secundario estilo Apple
 
-$positive: #4caf50;
-$negative: #f44336;
-$info: #2196f3;
-$warning: #ff9800;
+$dark: #1c1c1e;
+$dark-page: #0b0b0b;
+
+$positive: #34c759;
+$negative: #ff3b30;
+$info: #0a84ff;
+$warning: #ff9f0a;
+
+// Tamaños y radio
+$border-radius: 12px;
+$card-border-radius: 14px;
+
+// Tipografía
+$font-family-sans:
+  -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  sans-serif;
+$font-size-root: 16px;
+
+// Sombras suaves
+$elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+$elevation-2: 0 6px 20px rgba(0, 0, 0, 0.08);

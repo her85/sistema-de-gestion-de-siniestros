@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <div class="minimalist-container">
+    <router-view />
+  </div>
 </template>
 
 <script setup lang="ts">

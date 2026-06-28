@@ -1,19 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="minimalist-header" bordered>
-      <q-toolbar class="minimalist-toolbar">
-        <q-btn
-          flat
-          dense
-          round
-          icon="home"
-          to="/"
-          aria-label="Inicio"
-          class="q-mr-sm"
-        />
-        <q-toolbar-title class="minimalist-logo">
-          Sistema de gestión de siniestros
-        </q-toolbar-title>
+    <q-header v-if="showHeader" elevated class="app-header">
+      <q-toolbar class="app-toolbar">
+        <router-link to="/"><q-btn flat dense round icon="home" aria-label="Inicio" class="q-mr-sm bg-primary text-white" />
+        </router-link>
       </q-toolbar>
     </q-header>
 
@@ -24,25 +14,40 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+const showHeader = computed(() => route.path !== '/')
 </script>
 
 <style scoped lang="scss">
-.minimalist-header {
-  background: #fff;
-  color: #000;
-  box-shadow: none;
-  border-bottom: 1px solid #e0e0e0;
+.app-header {
+  background: var(--q-secondary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.minimalist-toolbar {
-  min-height: 56px;
+.app-toolbar {
+  min-height: 64px;
   padding: 0 1rem;
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
 }
 
-.minimalist-logo {
-  font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+.toolbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 260px;
+}
+
+@media (max-width: 600px) {
+  .search-input {
+    display: none;
+  }
 }
 </style>
