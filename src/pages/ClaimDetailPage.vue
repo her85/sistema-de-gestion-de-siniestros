@@ -6,7 +6,7 @@
         <h1 class="minimalist-title">Detalle del Siniestro</h1>
       </div>
 
-      <div v-if="claim" class="detail-card">
+      <div v-if="claim" class="detail-card minimalist-card">
         <div class="detail-claimNumber">
           <h4> Siniestro {{ claim.claimNumber }}</h4>
         </div>
@@ -17,19 +17,22 @@
 
         <!-- Actualizar Estado -->
         <!-- Nota: sección oculta para estados PAGADO/RECHAZO. -->
-        <div v-if="claim && claim.status !== 'PAGADO' && claim.status !== 'RECHAZADO'" class="update-status-section">
+        <div v-if="claim && claim.status !== 'PAGADO' && claim.status !== 'RECHAZADO'"
+          class="update-status-section minimalist-card">
           <h3 class="section-title">Actualizar Estado</h3>
           <div class="status-form">
             <q-select v-model="newStatus" :options="filteredStatusOptions" label="Nuevo Estado" outlined dense
               class="status-select" />
             <!-- OBS: El campo Monto se muestra cuando `newStatus === 'APROBADO'`. -->
-            <q-input v-if="newStatus === 'APROBADO'" v-model.number="newAmount" label="Monto"
-              type="number" outlined dense prefix="$" class="amount-input" />
-            <div v-if="newStatus === 'APROBADO'" :class="['amount-hint', (newAmount == null || newAmount <= 0) ? 'invalid' : '']">
+            <q-input v-if="newStatus === 'APROBADO'" v-model.number="newAmount" label="Monto" type="number" outlined
+              dense prefix="$" class="amount-input" />
+            <div v-if="newStatus === 'APROBADO'"
+              :class="['amount-hint', (newAmount == null || newAmount <= 0) ? 'invalid' : '']">
               El monto debe ser mayor a 0
             </div>
-            <q-btn @click="updateStatus" :disable="!newStatus || (newStatus === 'APROBADO' && (newAmount == null || newAmount <= 0))"
-              :loading="updating" color="primary" label="Actualizar" unelevated class="update-btn" />
+            <q-btn @click="updateStatus"
+              :disable="!newStatus || (newStatus === 'APROBADO' && (newAmount == null || newAmount <= 0))"
+              :loading="updating" color="primary" label="Actualizar" unelevated class="btn-minimalist update-btn" />
           </div>
         </div>
 
@@ -184,7 +187,7 @@ onMounted(load)
 
 <style scoped lang="scss">
 .minimalist-page {
-  background: #fafafa;
+  background: #f7f7f8;
   min-height: 100vh;
 }
 
@@ -200,11 +203,8 @@ onMounted(load)
 }
 
 .detail-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
   max-width: 800px;
+  padding: 1.25rem;
 }
 
 .detail-claimNumber {
@@ -230,7 +230,10 @@ onMounted(load)
   text-transform: uppercase;
   font-size: 0.625rem;
   letter-spacing: 0.05em;
-  padding: 0.375rem 0.875rem;
+  padding: 0.375rem 0.75rem;
+  background: #f5f5f7;
+  color: #111;
+  border-radius: 8px;
 }
 
 .claim-date {
@@ -247,11 +250,8 @@ onMounted(load)
 }
 
 .update-status-section {
-  padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #e0e0e0;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .status-form {
@@ -277,6 +277,7 @@ onMounted(load)
   margin-top: 0.25rem;
   color: #666;
 }
+
 .amount-hint.invalid {
   color: #d32f2f;
   font-weight: 600;

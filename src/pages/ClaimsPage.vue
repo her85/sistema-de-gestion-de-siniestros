@@ -1,8 +1,12 @@
 <template>
   <q-page class="minimalist-page">
     <div class="minimalist-container">
-      <h1 class="minimalist-title">Siniestros</h1>
-      <ClaimList />
+      <div class="space-y-lg">
+        <h1 class="minimalist-title">Siniestros</h1>
+        <div class="minimalist-card">
+          <ClaimList />
+        </div>
+      </div>
     </div>
   </q-page>
 </template>

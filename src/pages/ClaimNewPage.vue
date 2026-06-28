@@ -124,9 +124,10 @@ async function onSubmit() {
 .minimalist-form {
   max-width: 600px;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
 }
 
 .form-group {
@@ -166,25 +167,10 @@ async function onSubmit() {
 }
 
 .btn-minimalist {
-  background: #000;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  @extend .btn-minimalist;
 }
 
 .btn-minimalist-outline {
-  background: transparent;
-  color: #000;
-  border: 1px solid #e0e0e0;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-
-  &:hover {
-    border-color: #000;
-  }
+  @extend .btn-minimalist-outline;
 }
 </style>

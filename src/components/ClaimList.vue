@@ -29,9 +29,11 @@
       </template>
     </q-table>
 
-    <!--<div v-if="claims.length === 0" class="empty-state">
-      <p class="minimalist-subtitle">No hay siniestros registrados</p>
-    </div>-->
+    <div v-if="claims.length === 0" class="empty-state">
+      <div class="minimalist-card">
+        <p class="minimalist-subtitle">No hay siniestros registrados</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -120,12 +122,7 @@ onMounted(load)
 }
 
 .btn-minimalist {
-  background: #000;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  @extend .btn-minimalist;
 }
 
 .claims-table {
@@ -151,7 +148,7 @@ onMounted(load)
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: #f9f9f9;
+      background-color: rgba(0, 0, 0, 0.02);
     }
   }
 }
