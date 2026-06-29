@@ -233,7 +233,4 @@ Contacto y soporte
 - Para dudas funcionales: responsable del producto / equipo de negocio.
 - Para dudas técnicas: equipo frontend (revisar historial de commits y `package.json` para autores).
 
-## Notas finales
-
-- Este README resume el propósito y la arquitectura del frontend. Puedo expandir secciones (diagramas de flujo, contratos API, ejemplos de request/response) si lo deseas.
 
